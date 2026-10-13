@@ -173,6 +173,40 @@
     new ResizeObserver(size).observe(cv);
   }
 
+  /* ---------------- 1:00 the Michael hour ---------------- */
+  function mj() {
+    var WHY = [['DANGEROUS · 1991', 'Ancient Egypt, Eddie Murphy, Iman, Magic Johnson, and that dance break.'],
+               ['INVINCIBLE · 2001', 'Chris Tucker in the video, Marlon Brando in a cameo, and one perfect intro.']];
+    var sel = 0, songs = [].slice.call(document.querySelectorAll('.mj-song')), covers = [].slice.call(document.querySelectorAll('.record .cover')), rec = $('mj-record');
+    function q(x) { return encodeURIComponent(x); }
+    function links(i) {
+      var t = Radio.tracks[i], term = t.title + ' ' + t.artist, info = (Media.cache.get('song:' + t.term) || {}).d, box = $('mj-links');
+      box.innerHTML = '';
+      [['Apple Music', info && info.apple ? info.apple : 'https://music.apple.com/us/search?term=' + q(term)],
+       ['Spotify', 'https://open.spotify.com/search/' + q(term)],
+       ['YouTube', 'https://www.youtube.com/results?search_query=' + q(term + ' official video')]].forEach(function (l) {
+        var a = el('a', 'btn btn-ghost', l[0]); a.href = l[1]; a.target = '_blank'; a.rel = 'noopener'; box.appendChild(a);
+      });
+    }
+    function select(i) {
+      sel = i;
+      songs.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+      covers.forEach(function (c, j) { c.classList.toggle('on', j === i); });
+      $('mj-lbl').textContent = WHY[i][0]; $('mj-why').textContent = WHY[i][1];
+      links(i);
+    }
+    songs.forEach(function (b, i) { b.addEventListener('click', function () { select(i); Radio.play(i); }); });
+    $('mj-play').addEventListener('click', function () { Radio.toggle(sel); });
+    Radio.onChange(function (st) {
+      if (st.playing && st.idx < 2 && st.idx !== sel) select(st.idx);
+      var mine = st.idx === sel && st.playing;
+      $('mj-play').textContent = mine ? '❚❚ Pause' : '▶ Play it';
+      $('mj-bar').style.width = (st.idx === sel ? st.progress * 100 : 0) + '%';
+      rec.classList.toggle('spin', mine);
+    });
+    select(0);
+  }
+
   /* ---------------- 2:30 anime: the 1000 − 7 counter ---------------- */
   function anime() {
     var g = $('ghoul'), n = 1000, t = null, show = g.closest('.show');
@@ -267,15 +301,25 @@
       var ul = el('ul', 'tapes');
       set.forEach(function (f, j) {
         var li = el('li'); li.dataset.k = c + '-' + j;
+        var th = el('span', 'ph thumb'); th.setAttribute('data-media', 'film:' + f.t + ' ' + f.y + ' film'); th.setAttribute('data-alt', '');
+        li.appendChild(th);
         li.appendChild(el('span', 'y', f.y));
         var b = el('button', null, f.t); b.addEventListener('click', function () { tune(c, j); });
         li.appendChild(b); ul.appendChild(li);
       });
       list.appendChild(ul);
     });
+    function poster(f) { return 'film:' + f.t + ' ' + f.y + ' film'; }
     function draw() {
-      var f = FILMS[ch][i];
-      card.innerHTML = '';
+      var f = FILMS[ch][i], shown = ch + '-' + i;
+      card.innerHTML = ''; card.classList.remove('has-poster');
+      var old = screen.querySelector('img.poster'); if (old) old.remove();
+      Media.lookup(poster(f)).then(function (src) {
+        if (!src || shown !== ch + '-' + i) return;
+        var img = new Image(); img.className = 'poster'; img.alt = f.t + ' poster'; img.referrerPolicy = 'no-referrer';
+        img.onload = function () { if (shown === ch + '-' + i) { screen.insertBefore(img, card); card.classList.add('has-poster'); } };
+        img.src = src;
+      });
       var top = el('div', 'ch'); top.appendChild(el('span', null, 'CH ' + (ch + 1) + ' · ' + (ch ? 'SOLLYWOOD' : 'NOLLYWOOD'))); top.appendChild(el('span', null, 'PART ' + (i + 1)));
       var mid = el('div'); mid.appendChild(el('p', 'ft', f.t)); mid.appendChild(el('p', 'meta', f.y + ' · ' + f.m)); mid.appendChild(el('p', 'why', f.w));
       card.appendChild(top); card.appendChild(mid); card.appendChild(el('div', 'tbc', 'TO BE CONTINUED…'));
@@ -296,6 +340,11 @@
     function tune(c, j) { fuzz(320, function () { ch = c; i = j; draw(); }); }
     [].forEach.call(document.querySelectorAll('[data-ch]'), function (b) { b.addEventListener('click', function () { tune(+b.getAttribute('data-ch'), 0); }); });
     $('tape-next').addEventListener('click', function () { tune(ch, (i + 1) % FILMS[ch].length); });
+    // fetch every poster once the telly is close, so changing channel is instant
+    new IntersectionObserver(function (en, io) {
+      if (!en[0].isIntersecting) return; io.disconnect();
+      FILMS.forEach(function (set) { set.forEach(function (f) { Media.lookup(poster(f)).then(function (src) { if (src) { var im = new Image(); im.referrerPolicy = 'no-referrer'; im.src = src; } }); }); });
+    }, { rootMargin: '600px 0px' }).observe(screen);
     draw();
   }
 
@@ -328,7 +377,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    [kitchen, sketch, anime, theatre, weeks, nonsense, telly, strangers].forEach(function (f) {
+    [kitchen, sketch, mj, anime, theatre, weeks, nonsense, telly, strangers].forEach(function (f) {
       try { f(); } catch (e) { if (window.console) console.error(f.name, e); }
     });
   });

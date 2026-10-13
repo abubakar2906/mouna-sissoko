@@ -10,12 +10,12 @@ One Saturday in Abuja, from 9am to 8pm, staged as a play in her building. The sk
 | 9:30am | The company | The cast list: Michael, Tanjiro, Asta, Yuji, Jotaro, Kaneki, James (& Fuhad), Gumball, Mordecai & Rigby, her authors, Abuja. |
 | 10:00am | The kitchen | Alfredo pasta, sticky honey barbecue chicken with mash and gravy, chicken burritos. Tick off ingredients; the timer buttons start an oven timer under the clock. |
 | 11:30am | The desk | A sketchbook page anyone can draw on, with prompts. "Keep it" saves the drawing. |
-| 1:00pm | The Michael hour | The Billie Jean floor, the sequined glove, four albums. |
+| 1:00pm | The Michael hour | Her two Michael songs with their album covers and a player, the sequined glove, and the Billie Jean floor. |
 | 2:30pm | Anime marathon | Demon Slayer first, then Black Clover, Jujutsu Kaisen, JoJo and Tokyo Ghoul. Hover each one. |
 | 4:00pm | The matinée | A working lighting desk and a few theatre words. |
 | 5:00pm | Headphones in | ShxtsnGigs, Team James, and a one-minute snippet of the latest episode. |
 | 5:45pm | Cartoon break | Gumball and Regular Show. Do not press the button. |
-| 6:15pm | Double feature | A telly with two channels: old Nollywood and Sollywood. |
+| 6:15pm | Double feature | A telly with two channels, old Nollywood and Sollywood, showing each film's poster. |
 | 6:45pm | Golden hour | Tap the people, windows and cars on the street for their stories. |
 | 7:45pm | The lamp | Her books, her writing, sonder, and To Be Continued. |
 
@@ -27,7 +27,7 @@ The four songs are Remember the Time, You Rock My World, Twisted and Ignition (R
 
 ## Pictures
 
-Album covers, anime posters, cartoon art, book covers and photos are fetched in the visitor's browser (Apple, Jikan/MyAnimeList, TVmaze, Open Library, Google Books, Wikipedia) and cached for two weeks. Each one has a drawn version underneath, so the page still looks finished if a service is down.
+Album covers, anime posters, cartoon art, film posters, book covers and photos are fetched in the visitor's browser (Apple, AniList with MyAnimeList as backup, TVmaze, Wikipedia, Open Library, Amazon and Google Books for covers) and cached for two weeks. A lookup that fails is retried an hour later. Each one has a drawn version underneath, so the page still looks finished if a service is down.
 
 ## Her Substack
 

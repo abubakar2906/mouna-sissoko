@@ -56,9 +56,7 @@
     $('np-icon').setAttribute('d', playing ? 'M3 1.5h3v11H3zM8 1.5h3v11H8z' : 'M3 1.5v11l9-5.5z');
     $('np-play').setAttribute('aria-label', playing ? 'Pause the radio' : 'Play the radio');
     $('deck-play').textContent = playing ? '❚❚ Pause' : '▶ Play';
-    [].forEach.call(document.querySelectorAll('.album[data-track]'), function (a) {
-      a.classList.toggle('spin', playing && +a.getAttribute('data-track') === idx);
-    });
+    notify();
     if ('mediaSession' in navigator && window.MediaMetadata) {
       navigator.mediaSession.metadata = new MediaMetadata({ title: t.title, artist: t.artist, album: '104.1 FM · Mounâ FM',
         artwork: info && info.art ? [{ src: info.art, sizes: '600x600', type: 'image/jpeg' }] : [] });
@@ -79,6 +77,11 @@
     });
   }
   var skips = 0;
+  var subs = [];
+  function notify() {
+    var st = { idx: idx, playing: want && !audio.paused, progress: audio.duration ? audio.currentTime / audio.duration : 0 };
+    subs.forEach(function (f) { try { f(st); } catch (e) {} });
+  }
   function note(msg) { var p = $('deck-full'); if (p && msg) p.innerHTML = msg + ' ' + p.innerHTML; }
 
   function play(i) { want = true; return load(i == null ? idx : i, true); }
@@ -86,7 +89,7 @@
   function toggle() { if (want && !audio.paused) pause(); else play(); }
 
   audio.addEventListener('timeupdate', function () {
-    var d = audio.duration || 30; $('deck-bar').style.width = Math.min(100, audio.currentTime / d * 100) + '%';
+    var d = audio.duration || 30; $('deck-bar').style.width = Math.min(100, audio.currentTime / d * 100) + '%'; notify();
   });
   audio.addEventListener('ended', function () { if (want) play(idx + 1); });
   audio.addEventListener('pause', function () { if (!audio.ended) { var c = Media.cache.get('song:' + TRACKS[idx].term); paint(c ? c.d : null); } });
@@ -147,9 +150,6 @@
     $('np-play').addEventListener('click', toggle);
     $('deck-play').addEventListener('click', toggle);
     $('deck-next').addEventListener('click', function () { if (want) play(idx + 1); else load(idx + 1, false); });
-    [].forEach.call(document.querySelectorAll('[data-play]'), function (b) {
-      b.addEventListener('click', function () { var i = +b.getAttribute('data-play'); if (want && idx === i && !audio.paused) pause(); else play(i); });
-    });
     if ('mediaSession' in navigator) {
       try {
         navigator.mediaSession.setActionHandler('play', function () { play(); });
@@ -174,5 +174,7 @@
     epBtn.addEventListener('click', playPod);
   }
 
-  window.Radio = { init: init, play: play, pause: pause };
+  window.Radio = { init: init, play: play, pause: pause, tracks: TRACKS, links: function (i) { return links(TRACKS[i], (Media.cache.get('song:' + TRACKS[i].term) || {}).d); },
+    onChange: function (f) { subs.push(f); notify(); },
+    toggle: function (i) { if (want && idx === i && !audio.paused) pause(); else play(i); } };
 })();

@@ -2,9 +2,9 @@
    artwork (album covers, anime posters, show art, book covers) and lay it on top once it loads.
    Results are remembered in localStorage for two weeks so repeat visits don't hit the APIs again. */
 (function () {
-  var TTL = 14 * 864e5, PREFIX = 'mouna:media:v1:';
+  var TTL = 14 * 864e5, MISS_TTL = 36e5, PREFIX = 'mouna:media:v2:';
   function getCache(k) {
-    try { var v = JSON.parse(localStorage.getItem(PREFIX + k)); if (v && Date.now() - v.t < TTL) return v; } catch (e) {}
+    try { var v = JSON.parse(localStorage.getItem(PREFIX + k)); if (v && Date.now() - v.t < (v.d == null ? MISS_TTL : TTL)) return v; } catch (e) {}  // a miss is retried after an hour
     return null;
   }
   function setCache(k, d) { try { localStorage.setItem(PREFIX + k, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {} }
@@ -44,38 +44,74 @@
   function itunes(params) { return jsonp('https://itunes.apple.com/search?' + params + '&country=us'); }
   function big(art) { return art ? art.replace(/\/\d+x\d+bb\./, '/600x600bb.') : null; }
   function low(s) { return (s || '').toLowerCase(); }
+  function isbn10(i13) {
+    if (!/^978\d{10}$/.test(i13)) return null;
+    var core = i13.slice(3, 12), sum = 0;
+    for (var i = 0; i < 9; i++) sum += +core[i] * (10 - i);
+    var c = (11 - sum % 11) % 11;
+    return core + (c === 10 ? 'X' : c);
+  }
+  // a cover only counts if it really loads and isn't a 1-pixel "no image" stand-in
   function probe(src) {
     return new Promise(function (ok, no) {
-      var i = new Image(); i.onload = function () { i.naturalWidth > 2 ? ok(src) : no(); }; i.onerror = no; i.src = src;
+      var i = new Image(); i.onload = function () { i.naturalWidth > 20 ? ok(src) : no(); }; i.onerror = no; i.src = src;
     });
+  }
+
+  function anilist(query, s) {
+    return fetch('https://graphql.anilist.co', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ query: query, variables: { s: s } })
+    }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+  }
+  function jikanAnime(q) {
+    return jikan('https://api.jikan.moe/v4/anime?q=' + enc(q) + '&order_by=members&sort=desc&limit=1').then(function (d) {
+      var a = d.data && d.data[0]; if (!a) return null;
+      return (a.images.webp && a.images.webp.large_image_url) || a.images.jpg.large_image_url;
+    }).catch(function () { return null; });
+  }
+  function jikanChar(q) {
+    return jikan('https://api.jikan.moe/v4/characters?q=' + enc(q) + '&order_by=favorites&sort=desc&limit=1').then(function (d) {
+      var c = d.data && d.data[0]; if (!c) return null;
+      return (c.images.webp && c.images.webp.image_url) || c.images.jpg.image_url;
+    }).catch(function () { return null; });
   }
 
   var resolvers = {
     'itunes-album': function (q) {
-      var parts = q.split('|'), artist = parts[0], album = parts[1];
-      return itunes('term=' + enc(artist + ' ' + album) + '&entity=album&limit=15').then(function (d) {
+      var parts = q.split('|'), artist = parts[0], album = parts[1], song = parts[2];
+      function fromSong() {
+        if (!song) return null;
+        return itunes('term=' + enc(song + ' ' + artist) + '&entity=song&limit=25').then(function (d) {
+          var hit = (d.results || []).filter(function (r) {
+            return low(r.artistName).indexOf(low(artist)) > -1 && low(r.collectionName).indexOf(low(album)) > -1;
+          })[0];
+          return hit ? big(hit.artworkUrl100) : null;
+        });
+      }
+      return itunes('term=' + enc(album) + '&entity=album&attribute=albumTerm&limit=50').then(function (d) {
         var hit = (d.results || []).filter(function (r) {
           return low(r.artistName).indexOf(low(artist)) > -1 && low(r.collectionName).indexOf(low(album)) === 0;
         })[0];
-        return hit ? big(hit.artworkUrl100) : null;
-      });
+        return hit ? big(hit.artworkUrl100) : fromSong();
+      }, fromSong);
     },
     'podcast': function (q) {
       return itunes('term=' + enc(q) + '&media=podcast&entity=podcast&limit=3').then(function (d) {
         var r = (d.results || [])[0]; return r ? (r.artworkUrl600 || big(r.artworkUrl100)) : null;
       });
     },
-    'jikan-anime': function (q) {
-      return jikan('https://api.jikan.moe/v4/anime?q=' + enc(q) + '&order_by=members&sort=desc&limit=1&sfw=true').then(function (d) {
-        var a = d.data && d.data[0]; if (!a) return null;
-        return (a.images.webp && a.images.webp.large_image_url) || a.images.jpg.large_image_url;
-      });
+    'anime': function (q) {
+      return anilist('query($s:String){Page(perPage:1){media(search:$s,type:ANIME,sort:POPULARITY_DESC){coverImage{extraLarge large}}}}', q)
+        .then(function (d) { var m = d.data.Page.media[0]; return m ? (m.coverImage.extraLarge || m.coverImage.large) : null; })
+        .catch(function () { return null; })
+        .then(function (url) { return url || jikanAnime(q); });
     },
-    'jikan-char': function (q) {
-      return jikan('https://api.jikan.moe/v4/characters?q=' + enc(q) + '&order_by=favorites&sort=desc&limit=1').then(function (d) {
-        var c = d.data && d.data[0]; if (!c) return null;
-        return (c.images.webp && c.images.webp.image_url) || c.images.jpg.image_url;
-      });
+    'char': function (q) {
+      return anilist('query($s:String){Page(perPage:1){characters(search:$s,sort:FAVOURITES_DESC){image{large}}}}', q)
+        .then(function (d) { var c = d.data.Page.characters[0]; return c ? c.image.large : null; })
+        .catch(function () { return null; })
+        .then(function (url) { return url || jikanChar(q); });
     },
     'tvmaze': function (q) {
       return getJSON('https://api.tvmaze.com/singlesearch/shows?q=' + enc(q)).then(function (d) {
@@ -87,22 +123,39 @@
         return d && d.thumbnail ? d.thumbnail.source : null;
       });
     },
-    'isbn': function (list) {
-      var isbns = list.split(','), i = 0;
+    'film': function (q) {
+      return getJSON('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&generator=search&gsrlimit=1&gsrsearch=' + enc(q) +
+        '&prop=pageimages&piprop=thumbnail&pithumbsize=800&pilicense=any').then(function (d) {
+        var pages = d.query && d.query.pages, k = pages && Object.keys(pages)[0];
+        return k && pages[k].thumbnail ? pages[k].thumbnail.source : null;
+      });
+    },
+    'book': function (q) {
+      var parts = q.split('|'), title = parts[0], author = parts[1], isbns = (parts[2] || '').split(',').filter(Boolean);
+      var tries = [
+        function () {
+          return getJSON('https://openlibrary.org/search.json?title=' + enc(title) + '&author=' + enc(author) + '&limit=5&fields=cover_i').then(function (d) {
+            var doc = (d.docs || []).filter(function (x) { return x.cover_i; })[0];
+            return doc ? probe('https://covers.openlibrary.org/b/id/' + doc.cover_i + '-L.jpg') : null;
+          });
+        }
+      ];
+      isbns.forEach(function (i) { tries.push(function () { return probe('https://covers.openlibrary.org/b/isbn/' + i + '-L.jpg?default=false'); }); });
+      isbns.forEach(function (i) { var t = isbn10(i); if (t) tries.push(function () { return probe('https://images-na.ssl-images-amazon.com/images/P/' + t + '.01.LZZZZZZZ.jpg'); }); });
+      tries.push(function () {
+        return getJSON('https://www.googleapis.com/books/v1/volumes?q=' + enc('intitle:' + title + ' inauthor:' + author) + '&maxResults=5&printType=books').then(function (d) {
+          var hit = (d.items || []).filter(function (it) { return it.volumeInfo && it.volumeInfo.imageLinks; })[0];
+          if (!hit) return null;
+          var l = hit.volumeInfo.imageLinks;
+          return probe((l.thumbnail || l.smallThumbnail).replace(/^http:/, 'https:').replace('&edge=curl', ''));
+        });
+      });
+      var k = 0;
       function next() {
-        if (i >= isbns.length) return Promise.resolve(null);
-        var src = 'https://covers.openlibrary.org/b/isbn/' + isbns[i++].trim() + '-L.jpg?default=false';
-        return probe(src).catch(next);
+        if (k >= tries.length) return Promise.resolve(null);
+        return Promise.resolve().then(tries[k++]).then(function (u) { return u || next(); }, next);
       }
       return next();
-    },
-    'gbooks': function (q) {
-      return getJSON('https://www.googleapis.com/books/v1/volumes?q=' + enc(q) + '&maxResults=5&printType=books').then(function (d) {
-        var hit = (d.items || []).filter(function (it) { return it.volumeInfo && it.volumeInfo.imageLinks; })[0];
-        if (!hit) return null;
-        var l = hit.volumeInfo.imageLinks;
-        return (l.thumbnail || l.smallThumbnail).replace(/^http:/, 'https:').replace('&edge=curl', '').replace('zoom=1', 'zoom=2');
-      });
     }
   };
 
