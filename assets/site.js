@@ -2,7 +2,7 @@
    Also: the radio drawer, the building's rooms, the Billie Jean floor, the prompter and the freeze frame. */
 (function () {
   // Her Substack. Paste the full address between the quotes and the button appears at the end of the day.
-  var SUBSTACK_URL = '';
+  var SUBSTACK_URL = 'https://substack.com/@bymouna';
 
   var root = document.documentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   function $(id) { return document.getElementById(id); }
