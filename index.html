@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>mounâ sissokò</title>
+<meta name="description" content="One Saturday in Abuja, from 9am to 8pm, in mounâ sissokò's building. Michael Jackson, Demon Slayer, ShxtsnGigs, theatre, old Nollywood, and the lamp she writes by.">
+<meta name="theme-color" content="#0f1a33">
+<meta property="og:title" content="mounâ sissokò">
+<meta property="og:description" content="A matinée in one day. Abuja, 9am to 8pm.">
+<meta property="og:image" content="/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Caveat:wght@600;700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<script defer src="/assets/media.js"></script>
+<script defer src="/assets/radio.js"></script>
+<script defer src="/assets/scenes.js"></script>
+<script defer src="/assets/site.js"></script>
+</head>
+<body>
+<!-- shared drawings -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="checker" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#171a17"/><rect width="8" height="8" fill="#2f8f5b"/><rect x="8" y="8" width="8" height="8" fill="#2f8f5b"/></pattern>
+    <pattern id="checkerS" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#171a17"/><rect width="4" height="4" fill="#2f8f5b"/><rect x="4" y="4" width="4" height="4" fill="#2f8f5b"/></pattern>
+    <symbol id="glove" viewBox="0 0 120 170">
+      <rect x="9" y="72" width="15" height="46" rx="7.5" transform="rotate(-34 16 95)" fill="#f7f4ee" stroke="#cfc8b8" stroke-width="2"/>
+      <rect x="26" y="22" width="15" height="62" rx="7.5" fill="#f7f4ee" stroke="#cfc8b8" stroke-width="2"/>
+      <rect x="43" y="10" width="15" height="70" rx="7.5" fill="#f7f4ee" stroke="#cfc8b8" stroke-width="2"/>
+      <rect x="60" y="16" width="15" height="64" rx="7.5" fill="#f7f4ee" stroke="#cfc8b8" stroke-width="2"/>
+      <rect x="77" y="34" width="13" height="48" rx="6.5" fill="#f7f4ee" stroke="#cfc8b8" stroke-width="2"/>
+      <rect x="24" y="66" width="68" height="76" rx="18" fill="#f7f4ee" stroke="#cfc8b8" stroke-width="2"/>
+      <rect x="30" y="138" width="56" height="20" rx="4" fill="#ebe5d8" stroke="#cfc8b8" stroke-width="2"/>
+      <g fill="#d9d3c6"><circle cx="40" cy="90" r="2"/><circle cx="52" cy="84" r="2"/><circle cx="64" cy="92" r="2"/><circle cx="76" cy="86" r="2"/><circle cx="46" cy="104" r="2"/><circle cx="58" cy="110" r="2"/><circle cx="70" cy="104" r="2"/><circle cx="40" cy="120" r="2"/><circle cx="54" cy="126" r="2"/><circle cx="68" cy="122" r="2"/><circle cx="80" cy="116" r="2"/><circle cx="33" cy="40" r="2"/><circle cx="50" cy="30" r="2"/><circle cx="67" cy="36" r="2"/><circle cx="50" cy="56" r="2"/><circle cx="33" cy="62" r="2"/><circle cx="67" cy="60" r="2"/><circle cx="83" cy="56" r="2"/></g>
+    </symbol>
+    <symbol id="spark" viewBox="-10 -10 20 20"><path d="M0-10 2 -2 10 0 2 2 0 10-2 2-10 0-2-2Z" fill="#fff"/></symbol>
+  </defs>
+</svg>
+
+<div class="sky" aria-hidden="true"></div>
+<div class="stars" aria-hidden="true"></div>
+<div class="sun" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="hud-left">
+    <div class="clock"><small>ABUJA</small><b id="clock">9:00</b><span id="ampm">AM</span></div>
+    <button class="oven" id="oven" hidden aria-live="polite"></button>
+  </div>
+  <button class="onair" id="onair" aria-expanded="false" aria-controls="dial"><span class="dot"></span>ON AIR <span class="fm">104.1 FM</span></button>
+</header>
+
+<aside class="dial" id="dial" hidden aria-label="The radio">
+  <header><h2><small>104.1 FM · MOUNÂ FM</small>On the radio</h2><button class="x" id="dialx" aria-label="Close the radio">×</button></header>
+  <div class="deck">
+    <div class="art" id="deck-art"><span>104</span></div>
+    <div>
+      <div class="tt" id="deck-title">Remember the Time</div>
+      <div class="ar" id="deck-artist">Michael Jackson</div>
+      <div class="ctl">
+        <button class="btn btn-sun" id="deck-play">▶ Play</button>
+        <button class="btn btn-ghost" id="deck-next" aria-label="Next song">Next ›</button>
+      </div>
+    </div>
+  </div>
+  <div class="bar" aria-hidden="true"><i id="deck-bar"></i></div>
+  <p class="full" id="deck-full"></p>
+  <ol class="tracks" id="tracks"></ol>
+  <h3>TODAY'S PROGRAMME</h3>
+  <ol class="prog" id="prog"></ol>
+  <p class="note">The radio plays the 30-second clips Apple shares for each song. The links open the full song.</p>
+</aside>
+
+<div class="np" id="np"><button class="play" id="np-play" aria-label="Play the radio"><svg viewBox="0 0 14 14" aria-hidden="true"><path id="np-icon" d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg></button>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="lbl">104.1</span><span class="song" id="np-song">Remember the Time · Michael Jackson</span></div>
+<div class="prompter" id="prompter" aria-hidden="true">…line?</div>
+<div class="fired" id="fired" aria-hidden="true">YOU'RE FIRED!</div>
+
+<main>
+<!-- ============ 9:00 OVERTURE ============ -->
+<section class="overture" id="overture" data-hour="9" data-name="The building">
+  <p class="dir">(Abuja. A Saturday, 9:00am. The harmattan haze has lifted and the light is very bright. Lights up on a building in Wuse 2, with its front wall taken away.)</p>
+  <h1 class="name">mounâ <em>sissokò</em></h1>
+  <div class="over-row">
+    <p class="sub">A matinée in one day. Every room in her building, from the first pot on the stove to the last lamp at night.</p>
+    <p class="hint hand">tap a room. everything she loves is in here ↓</p>
+  </div>
+  <div class="set-wrap" id="setwrap">
+<svg class="set" id="set" viewBox="0 0 1200 760" role="group" aria-label="Mounâ's building with the front wall removed. Six rooms you can open.">
+    <!-- far city -->
+    <g class="far">
+      <path d="M700 702C716 590 790 470 906 446 990 430 1066 458 1118 512 1162 556 1196 622 1200 702Z" fill="var(--haze)"/>
+      <path d="M842 474c30-10 64-12 96-4" stroke="#fff" stroke-opacity=".25" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g fill="var(--haze)" opacity=".95">
+        <rect x="20" y="560" width="46" height="142"/><rect x="72" y="600" width="38" height="102"/>
+        <rect x="128" y="492" width="11" height="210"/><path d="M128 492l5.5-26 5.5 26z"/>
+        <rect x="292" y="492" width="11" height="210"/><path d="M292 492l5.5-26 5.5 26z"/>
+        <rect x="150" y="600" width="132" height="102"/>
+      </g>
+      <path d="M156 602a60 60 0 0 1 120 0z" fill="#d5a647" opacity=".9"/>
+      <rect x="214" y="526" width="3" height="18" fill="#d5a647"/>
+      <circle cx="215.5" cy="524" r="5" fill="none" stroke="#d5a647" stroke-width="2.5"/>
+    </g>
+    <!-- trees -->
+    <g fill="#3f7a4f">
+      <circle cx="70" cy="642" r="34"/><circle cx="104" cy="628" r="30"/><circle cx="92" cy="660" r="28"/>
+      <circle cx="1112" cy="636" r="36"/><circle cx="1150" cy="652" r="30"/><circle cx="1080" cy="660" r="26"/>
+    </g>
+    <rect x="94" y="662" width="8" height="40" fill="#6b4a33"/><rect x="1110" y="664" width="8" height="38" fill="#6b4a33"/>
+    <!-- ground + road -->
+    <rect x="0" y="700" width="1200" height="34" fill="#c0603a"/>
+    <rect x="0" y="734" width="1200" height="26" fill="#4a4a55"/>
+    <path d="M0 747H1200" stroke="#ffc928" stroke-width="3" stroke-dasharray="26 22"/>
+    <!-- compound wall + gate + sign -->
+    <rect x="128" y="640" width="200" height="62" fill="#ece0c8"/><rect x="124" y="634" width="208" height="8" fill="#d9cbb0"/>
+    <rect x="196" y="622" width="96" height="80" fill="#2a3b66"/>
+    <g stroke="#41568a" stroke-width="3"><path d="M210 626v76M224 626v76M238 626v76M252 626v76M266 626v76M280 626v76"/></g>
+    <rect x="168" y="584" width="150" height="32" rx="5" fill="#f6efe0" stroke="#14213d" stroke-width="2"/>
+    <text x="243" y="608" text-anchor="middle" font-size="24" fill="#14213d">mounâ sissokò</text>
+    <!-- generator -->
+    <rect x="884" y="664" width="62" height="38" rx="4" fill="#c8322b"/><rect x="892" y="672" width="22" height="14" fill="#14213d" opacity=".6"/>
+    <circle cx="930" cy="680" r="7" fill="#14213d" opacity=".6"/>
+
+    <!-- building shell -->
+    <rect x="320" y="168" width="560" height="20" fill="#d9cbb0"/>
+    <rect x="330" y="186" width="540" height="516" fill="#efe3c9"/>
+    <!-- roof: tank + dish + clothesline -->
+    <rect x="752" y="118" width="54" height="52" rx="10" fill="#1d2a4a"/><rect x="752" y="130" width="54" height="5" fill="#2e3e66"/>
+    <path d="M396 168l10-34" stroke="#14213d" stroke-width="4"/><path d="M380 140a32 32 0 0 0 52 -16z" fill="#e7e3da" stroke="#14213d" stroke-width="2"/>
+    <path d="M470 134v34M680 134v34M470 140Q575 158 680 140" stroke="#14213d" stroke-width="2" fill="none"/>
+    <rect x="520" y="146" width="22" height="20" fill="#ffc928"/><rect x="560" y="148" width="18" height="24" fill="#2f8f5b"/><rect x="600" y="146" width="22" height="18" fill="#fff"/>
+
+    <!-- ROOM: bedroom (Michael) -->
+    <g class="room" data-room="bedroom" tabindex="0" role="button" aria-label="Her room: Michael Jackson">
+      <g class="art">
+        <rect x="340" y="188" width="260" height="157" fill="#2c3d6e"/>
+        <rect x="358" y="208" width="58" height="66" fill="var(--sky-top)" stroke="#f6efe0" stroke-width="5"/>
+        <rect x="438" y="202" width="64" height="88" fill="#111"/>
+        <use href="#glove" x="452" y="208" width="36" height="52"/>
+        <text x="470" y="284" text-anchor="middle" font-size="18" fill="#ffc928" style="font-family:var(--f-display);font-style:italic;font-weight:600">MJ</text>
+        <rect x="356" y="296" width="72" height="6" fill="#8a5a3c"/>
+        <use href="#glove" x="374" y="276" width="14" height="20"/>
+        <rect x="398" y="282" width="8" height="14" fill="#c8322b"/><rect x="408" y="284" width="8" height="12" fill="#ffc928"/>
+        <rect x="578" y="276" width="12" height="58" fill="#8a5a3c"/>
+        <rect x="470" y="304" width="110" height="30" rx="4" fill="#f6efe0"/>
+        <rect x="470" y="314" width="96" height="20" rx="3" fill="#ffc928"/>
+        <ellipse cx="560" cy="304" rx="16" ry="7" fill="#fff"/>
+        <rect x="340" y="333" width="260" height="12" fill="#1f2b50"/>
+      </g>
+      <rect class="hit" x="340" y="188" width="260" height="157"/>
+    </g>
+
+    <!-- ROOM: TV room (anime) -->
+    <g class="room" data-room="tv" tabindex="0" role="button" aria-label="The TV room: anime">
+      <g class="art">
+        <rect x="610" y="188" width="250" height="157" fill="#e7d29a"/>
+        <rect x="738" y="204" width="34" height="48" fill="#141414"/><path d="M755 216c-6 6-6 12 0 16 6-4 6-10 0-16zm-8 10c4 6 10 7 16 0" fill="#3fb36b"/>
+        <rect x="778" y="204" width="34" height="48" fill="#3a1f5c"/><text x="795" y="238" text-anchor="middle" font-size="22" fill="#e9e1ff" style="font-family:system-ui,sans-serif;font-weight:900">呪</text>
+        <rect x="818" y="204" width="34" height="48" fill="#ffd25a"/><text x="835" y="238" text-anchor="middle" font-size="22" fill="#6a2c91" style="font-family:system-ui,sans-serif;font-weight:900">ゴ</text>
+        <rect x="628" y="300" width="96" height="33" fill="#6b4a33"/>
+        <rect x="634" y="236" width="84" height="60" rx="4" fill="#111"/>
+        <rect x="640" y="242" width="72" height="48" fill="url(#checkerS)"/>
+        <rect x="670" y="252" width="14" height="24" fill="#f6efe0"/><circle cx="677" cy="264" r="5" fill="#c8322b"/>
+        <rect x="738" y="292" width="114" height="41" rx="8" fill="#b23a48"/>
+        <rect x="744" y="278" width="102" height="22" rx="8" fill="#9e2f3d"/>
+        <rect x="754" y="282" width="26" height="22" rx="4" fill="url(#checkerS)"/>
+        <rect x="610" y="333" width="250" height="12" fill="#c7ad6c"/>
+      </g>
+      <rect class="hit" x="610" y="188" width="250" height="157"/>
+    </g>
+
+    <rect x="330" y="345" width="540" height="10" fill="#d9cbb0"/>
+
+    <!-- ROOM: kitchen (baking + radio + podcast) -->
+    <g class="room" data-room="kitchen" tabindex="0" role="button" aria-label="The kitchen: baking, the radio and ShxtsnGigs">
+      <g class="art">
+        <rect x="340" y="355" width="260" height="150" fill="#bfe2cf"/>
+        <rect x="350" y="366" width="86" height="32" fill="#7c9c8a"/><path d="M393 366v32" stroke="#bfe2cf" stroke-width="2"/>
+        <rect x="528" y="366" width="56" height="50" fill="var(--sky-top)" stroke="#f6efe0" stroke-width="5"/>
+        <rect x="446" y="392" width="64" height="34" rx="5" fill="#c8322b"/><circle cx="462" cy="409" r="10" fill="#14213d"/>
+        <circle class="on-air-lamp" cx="500" cy="400" r="4" fill="#ffc928"/>
+        <path d="M454 392l14-14" stroke="#14213d" stroke-width="2"/>
+        <rect x="350" y="444" width="240" height="10" fill="#f6efe0"/>
+        <rect x="350" y="454" width="240" height="39" fill="#7c9c8a"/>
+        <rect x="366" y="456" width="66" height="36" rx="3" fill="#2a2a2a"/>
+        <rect class="oven-glow" x="374" y="462" width="50" height="22" rx="3" fill="#ffad42"/>
+        <path d="M452 444q22 26 44 0z" fill="#e7e3da" stroke="#14213d" stroke-width="2"/>
+        <path d="M462 440q12-10 24 0" stroke="#f6efe0" stroke-width="6" fill="none"/>
+        <rect x="512" y="432" width="52" height="12" fill="#14213d"/><rect x="518" y="414" width="40" height="18" rx="3" fill="#f6c6a0"/>
+        <path d="M518 418q5 6 10 0t10 0 10 0 10 0" fill="#fff"/><circle cx="538" cy="410" r="4" fill="#c8322b"/>
+        <rect x="572" y="422" width="14" height="22" rx="2" fill="#14213d"/><rect x="574" y="426" width="10" height="12" fill="#ffc928"/>
+        <rect x="340" y="493" width="260" height="12" fill="#8db3a0"/>
+      </g>
+      <rect class="hit" x="340" y="355" width="260" height="150"/>
+    </g>
+
+    <!-- ROOM: desk (sketching + writing + books) -->
+    <g class="room" data-room="desk" tabindex="0" role="button" aria-label="The desk: sketches, writing and books">
+      <g class="art">
+        <rect x="610" y="355" width="250" height="150" fill="#bcd6ea"/>
+        <g transform="rotate(-4 650 390)"><rect x="628" y="368" width="40" height="50" fill="#fff"/><path d="M634 380q8-6 14 2t14-2M636 394q10 8 22 0M638 406h22" stroke="#14213d" stroke-width="1.5" fill="none"/></g>
+        <g transform="rotate(3 700 388)"><rect x="680" y="366" width="40" height="50" fill="#fff"/><circle cx="700" cy="386" r="10" fill="none" stroke="#14213d" stroke-width="1.5"/><path d="M688 406q12-8 24 0" stroke="#14213d" stroke-width="1.5" fill="none"/></g>
+        <g transform="rotate(-2 750 390)"><rect x="730" y="370" width="40" height="50" fill="#fff"/><path d="M736 410l10-24 8 14 6-8 6 18" stroke="#14213d" stroke-width="1.5" fill="none"/></g>
+        <circle cx="648" cy="370" r="3" fill="#c8322b"/><circle cx="700" cy="368" r="3" fill="#ffc928"/><circle cx="750" cy="372" r="3" fill="#2f8f5b"/>
+        <rect x="628" y="456" width="150" height="8" fill="#8a5a3c"/><rect x="636" y="464" width="6" height="30" fill="#8a5a3c"/><rect x="764" y="464" width="6" height="30" fill="#8a5a3c"/>
+        <rect x="684" y="424" width="58" height="32" rx="2" fill="#0f1a33"/><rect x="706" y="433" width="14" height="14" fill="#ffc928"/>
+        <rect x="676" y="454" width="74" height="4" fill="#9aa3b5"/>
+        <path d="M640 456v-34l18-8" stroke="#14213d" stroke-width="3" fill="none"/><path d="M650 408l20 4-6 14z" fill="#ffc928"/>
+        <rect x="796" y="470" width="50" height="9" fill="#c8322b"/><rect x="800" y="461" width="44" height="9" fill="#2f8f5b"/><rect x="794" y="452" width="48" height="9" fill="#ffc928"/><rect x="802" y="443" width="40" height="9" fill="#f6efe0"/>
+        <rect x="610" y="493" width="250" height="12" fill="#97b4cb"/>
+      </g>
+      <rect class="hit" x="610" y="355" width="250" height="150"/>
+    </g>
+
+    <rect x="330" y="505" width="540" height="10" fill="#d9cbb0"/>
+
+    <!-- ROOM: sitting room (Nollywood / Sollywood) -->
+    <g class="room" data-room="sitting" tabindex="0" role="button" aria-label="The sitting room: Nollywood and South African films">
+      <g class="art">
+        <rect x="340" y="515" width="260" height="150" fill="#e8b45f"/>
+        <rect x="356" y="584" width="94" height="10" fill="#6b4a33"/><rect x="362" y="594" width="82" height="59" fill="#6b4a33"/>
+        <rect x="370" y="600" width="30" height="8" fill="#14213d"/><rect x="370" y="610" width="30" height="8" fill="#2a3b66"/><rect x="370" y="620" width="30" height="8" fill="#14213d"/>
+        <rect x="360" y="526" width="86" height="60" rx="8" fill="#3a3a3a"/>
+        <rect x="368" y="532" width="62" height="46" rx="6" fill="#d9c7a0"/>
+        <text x="399" y="552" text-anchor="middle" font-size="9" fill="#3b2a14" style="font-family:var(--f-time);font-weight:900;letter-spacing:.06em">TO BE</text>
+        <text x="399" y="564" text-anchor="middle" font-size="9" fill="#3b2a14" style="font-family:var(--f-time);font-weight:900;letter-spacing:.06em">CONTINUED…</text>
+        <circle cx="438" cy="546" r="3" fill="#888"/><circle cx="438" cy="560" r="3" fill="#888"/>
+        <circle cx="476" cy="560" r="20" fill="none" stroke="#14213d" stroke-width="3"/><path d="M476 540v40M456 560h40M462 546l28 28M490 546l-28 28" stroke="#14213d" stroke-width="1.5"/>
+        <path d="M476 580v64M462 652h28" stroke="#14213d" stroke-width="3"/>
+        <rect x="500" y="612" width="92" height="41" rx="8" fill="#2f5d50"/><rect x="506" y="598" width="80" height="22" rx="8" fill="#26493f"/>
+        <rect x="514" y="530" width="44" height="56" fill="#141414"/><circle cx="536" cy="552" r="12" fill="none" stroke="#e8b45f" stroke-width="3"/><circle cx="536" cy="552" r="3" fill="#e8b45f"/>
+        <text x="536" y="580" text-anchor="middle" font-size="7.5" fill="#e8b45f" style="font-family:var(--f-time);font-weight:900;letter-spacing:.08em">SOLLYWOOD</text>
+        <rect x="340" y="653" width="260" height="12" fill="#c48f3e"/>
+      </g>
+      <rect class="hit" x="340" y="515" width="260" height="150"/>
+    </g>
+
+    <!-- ROOM: stairwell (theatre + cartoons) -->
+    <g class="room" data-room="stair" tabindex="0" role="button" aria-label="The stairwell: theatre playbills and cartoons">
+      <g class="art">
+        <rect x="610" y="515" width="250" height="150" fill="#d3d6de"/>
+        <path d="M610 665h40v-20h30v-20h30v-20h30v-20h30v-20h30v-20h60v120z" fill="#a8adbb"/>
+        <path d="M630 640l220-110" stroke="#14213d" stroke-width="3"/>
+        <rect x="626" y="530" width="44" height="62" fill="#ffc928"/>
+        <text x="648" y="552" text-anchor="middle" font-size="9" fill="#14213d" style="font-family:var(--f-time);font-weight:900;letter-spacing:.1em">MATINÉE</text>
+        <path d="M648 560v20M642 580h12" stroke="#14213d" stroke-width="2"/><circle cx="648" cy="560" r="5" fill="#fff" stroke="#14213d" stroke-width="1.5"/>
+        <rect x="680" y="530" width="44" height="62" fill="#7fd0f5"/>
+        <circle cx="702" cy="556" r="14" fill="#3d8fe0"/><circle cx="697" cy="552" r="5" fill="#fff"/><circle cx="708" cy="552" r="5" fill="#fff"/><circle cx="698" cy="553" r="2" fill="#111"/><circle cx="709" cy="553" r="2" fill="#111"/>
+        <text x="702" y="584" text-anchor="middle" font-size="8" fill="#14213d" style="font-family:var(--f-time);font-weight:900">OOOOOH!</text>
+        <rect x="610" y="653" width="250" height="12" fill="#9298a8"/>
+      </g>
+      <rect class="hit" x="610" y="515" width="250" height="150"/>
+    </g>
+
+    <rect x="330" y="186" width="10" height="516" fill="#d9cbb0"/><rect x="860" y="186" width="10" height="516" fill="#d9cbb0"/>
+    <rect x="600" y="186" width="10" height="479" fill="#d9cbb0"/>
+    <rect x="322" y="665" width="556" height="37" fill="#d9cbb0"/>
+    <rect x="560" y="672" width="80" height="30" fill="#2a3b66"/>
+  </svg>
+  <div class="tag" id="tag" hidden><h3 id="tag-h"></h3><p id="tag-p"></p><a id="tag-a" href="#"></a></div>
+  </div>
+</section>
+
+<!-- ============ THE COMPANY ============ -->
+<section class="cast" id="cast" data-hour="9.5" data-name="The company">
+  <p class="eye">The company, in order of appearance</p>
+  <h2 class="sec">Everyone in today's show.</h2>
+  <p class="dir">(Her favourite people, real and drawn. Nobody here is a minor character.)</p>
+  <ul class="company">
+    <li><span class="ph"><svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" fill="#ffc928"/><circle cx="30" cy="25" r="10" fill="#14213d"/><path d="M11 60c2-16 10-23 19-23s17 7 19 23z" fill="#14213d"/></svg></span>
+      <div><div class="who"><span class="nm">Mounâ Sissokò</span><span class="lead"></span><span class="as">as herself</span></div><p class="note">Writer, cook, sketcher. Front row whenever possible.</p></div></li>
+    <li><span class="ph" data-media="wiki:Michael_Jackson" data-alt="Michael Jackson"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#111"/><use href="#glove" x="15" y="8" width="30" height="44"/></svg></span>
+      <div><div class="who"><span class="nm">Michael Jackson</span><span class="lead"></span><span class="as">the King of Pop</span></div><p class="note">The reason there is a sequined glove on her shelf.</p></div></li>
+    <li><span class="ph" data-media="jikan-char:Tanjirou Kamado" data-alt="Tanjiro Kamado"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="url(#checker)"/><rect x="22" y="14" width="16" height="30" rx="2" fill="#f6efe0"/><circle cx="30" cy="28" r="6" fill="#c8322b"/></svg></span>
+      <div><div class="who"><span class="nm">Tanjiro Kamado</span><span class="lead"></span><span class="as">Demon Slayer</span></div><p class="note">Her favourite. This is not up for discussion.</p></div></li>
+    <li><span class="ph" data-media="jikan-char:Asta" data-alt="Asta"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#141414"/><g fill="#3fb36b"><circle cx="30" cy="18" r="8"/><circle cx="18" cy="28" r="8"/><circle cx="42" cy="28" r="8"/><circle cx="23" cy="40" r="8"/><circle cx="37" cy="40" r="8"/></g></svg></span>
+      <div><div class="who"><span class="nm">Asta</span><span class="lead"></span><span class="as">Black Clover</span></div><p class="note">The loudest guest in the TV room.</p></div></li>
+    <li><span class="ph" data-media="jikan-char:Itadori Yuuji" data-alt="Yuji Itadori"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#3a1f5c"/><text x="30" y="40" text-anchor="middle" font-size="30" fill="#e9e1ff" style="font-family:system-ui,sans-serif;font-weight:900">呪</text></svg></span>
+      <div><div class="who"><span class="nm">Yuji Itadori</span><span class="lead"></span><span class="as">Jujutsu Kaisen</span></div><p class="note">Domain expansions happen on the sofa.</p></div></li>
+    <li><span class="ph" data-media="jikan-char:Jotarou Kuujou" data-alt="Jotaro Kujo"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#ffd25a"/><text x="30" y="41" text-anchor="middle" font-size="30" fill="#6a2c91" style="font-family:system-ui,sans-serif;font-weight:900">ゴ</text></svg></span>
+      <div><div class="who"><span class="nm">Jotaro Kujo</span><span class="lead"></span><span class="as">JoJo's Bizarre Adventure</span></div><p class="note">Arrives menacingly.</p></div></li>
+    <li><span class="ph" data-media="jikan-char:Ken Kaneki" data-alt="Ken Kaneki"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#1a1a1a"/><text x="30" y="35" text-anchor="middle" font-size="15" fill="#e04848" style="font-family:'Big Shoulders Display',sans-serif;font-weight:900">1000−7</text></svg></span>
+      <div><div class="who"><span class="nm">Ken Kaneki</span><span class="lead"></span><span class="as">Tokyo Ghoul</span></div><p class="note">Still counting down.</p></div></li>
+    <li><span class="ph" data-media="podcast:ShxtsnGigs" data-alt="ShxtsnGigs podcast cover"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#14213d"/><path d="M16 34v-5a14 14 0 0 1 28 0v5" stroke="#ffc928" stroke-width="4" fill="none"/><rect x="12" y="32" width="8" height="14" rx="3" fill="#ffc928"/><rect x="40" y="32" width="8" height="14" rx="3" fill="#ffc928"/></svg></span>
+      <div><div class="who"><span class="nm">James <small>&amp; Fuhad</small></span><span class="lead"></span><span class="as">ShxtsnGigs</span></div><p class="note">In her headphones since December 2023. James is the favourite. Fuhad knows.</p></div></li>
+    <li><span class="ph" data-media="tvmaze:The Amazing World of Gumball" data-alt="The Amazing World of Gumball"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#7fd0f5"/><circle cx="22" cy="31" r="11" fill="#3d8fe0"/><circle cx="40" cy="32" r="9" fill="#f28c28"/></svg></span>
+      <div><div class="who"><span class="nm">Gumball &amp; Darwin</span><span class="lead"></span><span class="as">Elmore's finest</span></div><p class="note">The Amazing World of Gumball, every episode.</p></div></li>
+    <li><span class="ph" data-media="tvmaze:Regular Show" data-alt="Regular Show"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#9bd06a"/><circle cx="22" cy="31" r="11" fill="#4f7fd0"/><circle cx="40" cy="32" r="9" fill="#8a6a50"/></svg></span>
+      <div><div class="who"><span class="nm">Mordecai &amp; Rigby</span><span class="lead"></span><span class="as">Regular Show</span></div><p class="note">Comic relief, on an extended break.</p></div></li>
+    <li><span class="ph" data-media="isbn:9781398506145,9781398506138,9781398506121" data-alt="Tomorrow I Become a Woman cover"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#c8322b"/><rect x="19" y="15" width="22" height="30" rx="2" fill="#f6efe0"/><path d="M23 23h14M23 28h14M23 33h9" stroke="#c8322b" stroke-width="2"/></svg></span>
+      <div><div class="who"><span class="nm">Aiwanose Odafen</span><span class="lead"></span><span class="as">author</span></div><p class="note"><i>Tomorrow I Become a Woman</i>. The book on her nightstand.</p></div></li>
+    <li><span class="ph" data-media="gbooks:intitle:Hafsatu Bebi inauthor:Fatima Bala" data-alt="Hafsatu Bebi cover"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#2f8f5b"/><rect x="19" y="15" width="22" height="30" rx="2" fill="#f6efe0"/><path d="M23 23h14M23 28h14M23 33h9" stroke="#2f8f5b" stroke-width="2"/></svg></span>
+      <div><div class="who"><span class="nm">Fatima Bala</span><span class="lead"></span><span class="as">author</span></div><p class="note">Three books, all on her shelf, spines out.</p></div></li>
+    <li><span class="ph" data-media="wiki:Abuja" data-alt="Abuja"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#6db7e8"/><circle cx="42" cy="18" r="8" fill="#ffc928"/><path d="M14 44a16 16 0 0 1 32 0z" fill="#d5a647"/><rect x="8" y="44" width="44" height="8" fill="#c0603a"/></svg></span>
+      <div><div class="who"><span class="nm">Abuja</span><span class="lead"></span><span class="as">in daylight</span></div><p class="note">Her favourite city, at its best between nine and seven.</p></div></li>
+    <li><span class="ph"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="30" fill="#2a3157"/><rect x="20" y="18" width="20" height="24" fill="#ffc928" opacity=".9"/><circle cx="30" cy="27" r="4" fill="#2a3157"/><path d="M24 42c1-6 3-8 6-8s5 2 6 8z" fill="#2a3157"/></svg></span>
+      <div><div class="who"><span class="nm">A stranger</span><span class="lead"></span><span class="as">every stranger</span></div><p class="note">Living a day as full as hers. See 6:45pm.</p></div></li>
+  </ul>
+</section>
+
+<!-- ============ 10:00 KITCHEN ============ -->
+<section class="scene" id="kitchen" data-hour="10" data-name="The kitchen">
+  <div class="head">
+    <div class="time">10:00<span>AM</span></div>
+    <div>
+      <p class="eye">Scene one · The kitchen</p>
+      <h2>Three things she will always cook.</h2>
+      <p class="dir">(The radio is on. ShxtsnGigs is playing from the phone propped against the kettle. Something is already on the stove.)</p>
+    </div>
+  </div>
+  <div class="room-panel kitchen">
+    <ul class="menu" role="tablist" aria-label="Recipes" id="menu"></ul>
+    <div id="recipe-out" role="tabpanel" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ============ 11:30 DESK ============ -->
+<section class="scene" id="desk" data-hour="11.5" data-name="The desk">
+  <div class="head">
+    <div class="time">11:30<span>AM</span></div>
+    <div>
+      <p class="eye">Scene two · The desk</p>
+      <h2>The best light of the day.</h2>
+      <p class="dir">(She moves her sketchbook to the window, where the light is good. The radio switches to something slower.)</p>
+    </div>
+  </div>
+  <div class="room-panel desk">
+    <div class="desk-grid">
+      <div>
+        <div class="pad-wrap"><canvas class="pad" id="pad" aria-label="A blank sketchbook page you can draw on"></canvas></div>
+        <div class="tools" role="toolbar" aria-label="Pencils">
+          <button data-ink="#14213d" aria-pressed="true"><span class="sw" style="background:#14213d"></span>Pencil</button>
+          <button data-ink="#ffc928" aria-pressed="false"><span class="sw" style="background:#ffc928"></span>Yellow</button>
+          <button data-ink="#c8322b" aria-pressed="false"><span class="sw" style="background:#c8322b"></span>Red</button>
+          <button data-ink="erase" aria-pressed="false"><span class="sw" style="background:#fff;border:1.5px solid #14213d"></span>Eraser</button>
+          <button id="pad-new">New page</button>
+          <button id="pad-save">Keep it</button>
+        </div>
+      </div>
+      <div>
+        <p class="eye">Today's prompt</p>
+        <p class="prompt-card" id="prompt-card">Draw the view from your window.</p>
+        <p class="small">Her sketchbook is open on the desk. Borrow a page. Nothing you draw leaves your screen unless you press <b>Keep it</b>, which saves it to your device.</p>
+        <button class="btn btn-ink" id="prompt-next">Give me another prompt</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1:00 THE MICHAEL HOUR ============ -->
+<section class="stage" id="mj" data-hour="13" data-name="The Michael hour">
+  <div class="stage-in">
+    <div class="mj-head">
+      <div>
+        <p class="eye">1:00PM · Scene three · The Michael hour</p>
+        <h2 class="mj-title">Remember the Time.</h2>
+        <p class="dir">(She draws the bedroom curtains and turns the radio up. The floor lights up wherever she steps.)</p>
+      </div>
+      <svg class="glove" viewBox="0 0 120 170" role="img" aria-label="A single white sequined glove">
+        <use href="#glove"/>
+        <use class="spark" href="#spark" x="18" y="20" width="18" height="18" style="animation-delay:-.3s"/>
+        <use class="spark" href="#spark" x="70" y="4" width="14" height="14" style="animation-delay:-1.1s"/>
+        <use class="spark" href="#spark" x="84" y="96" width="20" height="20" style="animation-delay:-1.8s"/>
+        <use class="spark" href="#spark" x="36" y="112" width="12" height="12" style="animation-delay:-.7s"/>
+      </svg>
+    </div>
+    <div class="floor-wrap">
+      <canvas class="floor" id="floor" aria-label="A dance floor of square tiles that light up where you move, like the pavement in the Billie Jean video"></canvas>
+      <div class="floor-cap"><span>Move across the floor. It remembers every step for about a second.</span><span>After Billie Jean, 1983</span></div>
+    </div>
+    <div class="albums">
+      <div class="album" data-album="Thriller"><div class="sleeve"><div class="vinyl"></div><span class="ph" data-media="itunes-album:Michael Jackson|Thriller" data-alt="Thriller album cover"><span class="face thr"><b>THRILLER</b><i></i></span></span></div>
+        <h3>Thriller<small>1982</small></h3><p class="trk">Billie Jean</p><p>The floor above is for this one. Human Nature is for looking out of windows.</p></div>
+      <div class="album" data-album="Bad"><div class="sleeve"><div class="vinyl"></div><span class="ph" data-media="itunes-album:Michael Jackson|Bad" data-alt="Bad album cover"><span class="face bad"><b>BAD</b></span></span></div>
+        <h3>Bad<small>1987</small></h3><p class="trk">Smooth Criminal</p><p>The white suit, the hat, and the lean nobody in her house can do.</p></div>
+      <div class="album" data-album="Dangerous" data-track="0"><div class="sleeve"><div class="vinyl"></div><span class="ph" data-media="itunes-album:Michael Jackson|Dangerous" data-alt="Dangerous album cover"><span class="face dng"><b>DANGEROUS</b></span></span></div>
+        <h3>Dangerous<small>1991</small></h3><p class="trk">Remember the Time <span class="onstation">ON HER RADIO</span></p><p>Ancient Egypt, Eddie Murphy, Iman, Magic Johnson, and that dance break.</p><button class="btn btn-sun" data-play="0">▶ Play it</button></div>
+      <div class="album" data-album="Invincible" data-track="1"><div class="sleeve"><div class="vinyl"></div><span class="ph" data-media="itunes-album:Michael Jackson|Invincible" data-alt="Invincible album cover"><span class="face inv"><b>INVINCIBLE</b></span></span></div>
+        <h3>Invincible<small>2001</small></h3><p class="trk">You Rock My World <span class="onstation">ON HER RADIO</span></p><p>Chris Tucker in the video, Marlon Brando in a cameo, and one perfect intro.</p><button class="btn btn-sun" data-play="1">▶ Play it</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2:30 ANIME ============ -->
+<section class="scene" id="anime" data-hour="14.5" data-name="Anime marathon">
+  <div class="head">
+    <div class="time">2:30<span>PM</span></div>
+    <div>
+      <p class="eye">Scene four · The TV room</p>
+      <h2>Demon Slayer, from episode one. Again.</h2>
+      <p class="dir">(She closes the curtains against the afternoon sun. Four other shows wait their turn.)</p>
+    </div>
+  </div>
+  <div class="room-panel anime">
+    <div class="shelf">
+      <div class="show" tabindex="0">
+        <span class="ribbon">HER FAVOURITE</span>
+        <span class="ph" data-media="jikan-anime:Kimetsu no Yaiba" data-alt="Demon Slayer poster" style="background:#171a17"><svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%"><rect width="200" height="300" fill="url(#checker)"/><rect x="66" y="88" width="68" height="112" rx="5" fill="#f6efe0"/><circle cx="100" cy="144" r="24" fill="#c8322b"/></svg>
+          <span class="fx fx-wave" aria-hidden="true"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><path d="M0 60q30-30 60 0t60 0 60 0 60 0 60 0 60 0 60 0 60 0v40H0z" fill="rgba(80,160,255,.55)"/><path d="M0 70q30-24 60 0t60 0 60 0 60 0 60 0 60 0 60 0 60 0" stroke="#fff" stroke-width="3" fill="none"/></svg></span></span>
+        <div><h3>Demon Slayer<small>2019 · KIMETSU NO YAIBA</small></h3><p>Tanjiro, Nezuko in her box, and the green-and-black checked haori. Water Breathing, First Form.</p></div>
+      </div>
+      <div class="show" tabindex="0">
+        <span class="ph" data-media="jikan-anime:Black Clover" data-alt="Black Clover poster" style="background:#141414"><span class="fb" style="color:#3fb36b">BLACK<br>CLOVER</span><span class="fx fx-clover" aria-hidden="true">✤</span></span>
+        <h3>Black Clover<small>2017</small></h3><p>Asta, born with no magic, shouting his way to Wizard King.</p>
+      </div>
+      <div class="show" tabindex="0">
+        <span class="ph" data-media="jikan-anime:Jujutsu Kaisen" data-alt="Jujutsu Kaisen poster" style="background:#3a1f5c"><span class="fb">JUJUTSU<br>KAISEN</span><span class="fx fx-domain" aria-hidden="true">領域展開</span></span>
+        <h3>Jujutsu Kaisen<small>2020</small></h3><p>Yuji, Gojo and the domain expansions. Hover for one.</p>
+      </div>
+      <div class="show" tabindex="0">
+        <span class="ph" data-media="jikan-anime:JoJo no Kimyou na Bouken (TV)" data-alt="JoJo's Bizarre Adventure poster" style="background:#ffd25a"><span class="fb" style="color:#6a2c91">JOJO'S<br>BIZARRE<br>ADVENTURE</span><span class="fx fx-go" aria-hidden="true"><b>ゴ</b><b>ゴ</b><b>ゴ</b><b>ゴ</b></span></span>
+        <h3>JoJo's Bizarre Adventure<small>2012</small></h3><p>A new JoJo every arc. Every pose is a statement.</p>
+      </div>
+      <div class="show" tabindex="0">
+        <span class="ph" data-media="jikan-anime:Tokyo Ghoul" data-alt="Tokyo Ghoul poster" style="background:#1a1a1a"><span class="fb" style="color:#e04848">TOKYO<br>GHOUL</span><span class="fx fx-ghoul" aria-hidden="true" id="ghoul">1000</span></span>
+        <h3>Tokyo Ghoul<small>2014</small></h3><p>Kaneki, and the question nobody wants to answer: what's 1000 minus 7?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4:00 MATINÉE ============ -->
+<section class="scene" id="matinee" data-hour="16" data-name="The matinée">
+  <div class="head">
+    <div class="time">4:00<span>PM</span></div>
+    <div>
+      <p class="eye">Scene five · The matinée</p>
+      <h2>Theatre, her biggest love.</h2>
+      <p class="dir">(The 4pm show. She is in her seat before the house lights go down, reading the programme, thank-yous included.)</p>
+    </div>
+  </div>
+  <div class="room-panel matinee">
+    <div class="theatre" id="theatre" role="img" aria-label="An empty stage with a ghost light, lit by the lighting desk below">
+      <div class="back"></div><div class="boards"></div>
+      <div class="ghost"><svg viewBox="0 0 20 80" aria-hidden="true"><path d="M10 18v58M3 78h14" stroke="#c9c3b6" stroke-width="2.5"/><circle class="bulb" cx="10" cy="12" r="7" fill="#ffe58a"/><path d="M3 12a7 7 0 0 1 14 0M3 8h14M3 16h14M10 4v16" stroke="#c9c3b6" stroke-width="1" fill="none"/></svg></div>
+      <div class="actor"><svg viewBox="0 0 40 110" aria-hidden="true"><circle cx="20" cy="14" r="10" fill="#14213d"/><path d="M6 110l3-60c1-18 22-18 22 0l3 60z" fill="#14213d"/><path d="M8 50l-6 26M32 50l8 22" stroke="#14213d" stroke-width="6" stroke-linecap="round"/></svg></div>
+      <div class="spot"></div>
+      <div class="legs l"></div><div class="legs r"></div><div class="border"></div>
+      <div class="houseglow"></div><div class="seats"></div>
+      <div class="q" id="qname">PRESET</div>
+    </div>
+    <div class="desk-board">
+      <div class="faders">
+        <div class="fader"><label for="f-house">HOUSE</label><input id="f-house" type="range" min="0" max="100" value="100"></div>
+        <div class="fader"><label for="f-wash">STAGE WASH</label><input id="f-wash" type="range" min="0" max="100" value="15"></div>
+        <div class="fader"><label for="f-spot">FOLLOW SPOT</label><input id="f-spot" type="range" min="0" max="100" value="0"></div>
+        <div class="fader"><label for="f-gel">GEL · AMBER TO BLUE</label><input id="f-gel" type="range" min="0" max="100" value="30"></div>
+      </div>
+      <div class="cues"><button class="btn bo" id="cue-bo">BLACKOUT</button><button class="btn go" id="cue-go">GO</button></div>
+    </div>
+    <p class="callout" id="callout">You're on the lighting desk. Press GO to run the show, one cue at a time.</p>
+    <dl class="glossary">
+      <div><dt>Matinée</dt><dd>An afternoon performance. Same show, better light outside when you leave.</dd></div>
+      <div><dt>The house</dt><dd>The audience side of the theatre. "House lights" are the ones over the seats.</dd></div>
+      <div><dt>Ghost light</dt><dd>A single bulb left burning on an empty stage overnight, so nobody falls into the pit.</dd></div>
+      <div><dt>Corpsing</dt><dd>Breaking character on stage by laughing. Very hard to stop once it starts.</dd></div>
+      <div><dt>Break a leg</dt><dd>What you say instead of "good luck", which is bad luck.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ 5:00 SHXTSNGIGS ============ -->
+<section class="scene" id="headphones" data-hour="17" data-name="Headphones in">
+  <div class="head">
+    <div class="time">5:00<span>PM</span></div>
+    <div>
+      <p class="eye">Scene six · Traffic on the way home</p>
+      <h2>Headphones in. ShxtsnGigs.</h2>
+      <p class="dir">(Go-slow on the way back from the theatre. She laughs out loud in the back of a taxi. Again.)</p>
+    </div>
+  </div>
+  <div class="room-panel pod">
+    <div class="pod-grid">
+      <span class="ph" data-media="podcast:ShxtsnGigs" data-alt="ShxtsnGigs podcast cover"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M18 58v-12a32 32 0 0 1 64 0v12" stroke="#ffc928" stroke-width="7" fill="none"/><rect x="10" y="54" width="18" height="30" rx="7" fill="#ffc928"/><rect x="72" y="54" width="18" height="30" rx="7" fill="#ffc928"/></svg></span>
+      <div>
+        <p class="eye">Her favourite host</p>
+        <p class="team"><span class="j">JAMES.</span><span class="f">(Fuhad, we still love you.)</span></p>
+        <div class="ep">
+          <div class="lbl" id="ep-lbl">THE LATEST EPISODE</div>
+          <div class="ttl" id="ep-title">James and Fuhad, this week</div>
+          <button class="btn btn-ink" id="ep-play">▶ Play a one-minute snippet</button>
+          <div class="bar" aria-hidden="true"><i id="ep-bar"></i></div>
+        </div>
+        <div class="since"><span>Listening since <b>December 2023</b></span><span>That's <b id="weeks">100</b> weeks and counting</span></div>
+        <div class="links">
+          <a class="btn btn-ghost" id="pod-yt" href="https://www.youtube.com/results?search_query=ShxtsnGigs" target="_blank" rel="noopener">Watch on YouTube</a>
+          <a class="btn btn-ghost" id="pod-sp" href="https://open.spotify.com/search/ShxtsnGigs/podcasts" target="_blank" rel="noopener">Spotify</a>
+          <a class="btn btn-ghost" id="pod-ap" href="https://podcasts.apple.com/search?term=ShxtsnGigs" target="_blank" rel="noopener">Apple Podcasts</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5:45 CARTOONS ============ -->
+<section class="scene" id="cartoons" data-hour="17.75" data-name="Cartoon break">
+  <div class="head">
+    <div class="time">5:45<span>PM</span></div>
+    <div>
+      <p class="eye">Scene seven · Cartoon break</p>
+      <h2>Five minutes of nonsense.</h2>
+      <p class="dir">(Shoes off. One episode of Gumball, then one Regular Show, then "just one more".)</p>
+    </div>
+  </div>
+  <div class="room-panel toons">
+    <div class="toon-grid">
+      <div class="toon"><span class="ph" data-media="tvmaze:The Amazing World of Gumball" data-alt="The Amazing World of Gumball"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#7fd0f5"/><circle cx="130" cy="110" r="56" fill="#3d8fe0"/><circle cx="214" cy="126" r="40" fill="#f28c28"/><circle cx="114" cy="98" r="16" fill="#fff"/><circle cx="148" cy="98" r="16" fill="#fff"/><circle cx="116" cy="100" r="6" fill="#111"/><circle cx="150" cy="100" r="6" fill="#111"/><circle cx="204" cy="118" r="11" fill="#fff"/><circle cx="226" cy="118" r="11" fill="#fff"/><circle cx="206" cy="120" r="4" fill="#111"/><circle cx="228" cy="120" r="4" fill="#111"/></svg></span>
+        <h3>The Amazing World of Gumball<small>2011–2019</small></h3><p>A blue cat, his goldfish brother with legs, and a town drawn in every style at once.</p></div>
+      <div class="toon"><span class="ph" data-media="tvmaze:Regular Show" data-alt="Regular Show"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#9bd06a"/><ellipse cx="130" cy="112" rx="44" ry="56" fill="#4f7fd0"/><ellipse cx="214" cy="132" rx="36" ry="40" fill="#8a6a50"/><circle cx="120" cy="96" r="12" fill="#fff"/><circle cx="142" cy="96" r="12" fill="#fff"/><circle cx="122" cy="98" r="5" fill="#111"/><circle cx="144" cy="98" r="5" fill="#111"/><rect x="194" y="114" width="40" height="14" rx="7" fill="#3a2a1e"/><circle cx="206" cy="121" r="5" fill="#fff"/><circle cx="222" cy="121" r="5" fill="#fff"/></svg></span>
+        <h3>Regular Show<small>2010–2017</small></h3><p>Two park groundskeepers, one blue jay and one raccoon, avoiding work at all costs. OOOOOOH.</p></div>
+    </div>
+    <button class="btn nonsense-btn" id="nonsense">Do not press this</button>
+  </div>
+</section>
+
+<!-- ============ 6:15 DOUBLE FEATURE ============ -->
+<section class="scene" id="double" data-hour="18.25" data-name="Double feature">
+  <div class="head">
+    <div class="time">6:15<span>PM</span></div>
+    <div>
+      <p class="eye">Scene eight · The sitting room</p>
+      <h2>Old Nollywood on one channel. Sollywood on the other.</h2>
+      <p class="dir">(The tape ends on a cliffhanger. Part two is somewhere in the house.)</p>
+    </div>
+  </div>
+  <div class="room-panel double">
+    <div class="tv-grid">
+      <div>
+        <div class="tv">
+          <div class="screen" id="screen">
+            <div class="card" id="screen-card"></div>
+            <canvas id="snow" aria-hidden="true"></canvas>
+          </div>
+        </div>
+        <div class="knobs">
+          <div class="chs" role="group" aria-label="Channel">
+            <button data-ch="0" aria-pressed="true">CH 1 · NOLLYWOOD</button>
+            <button data-ch="1" aria-pressed="false">CH 2 · SOLLYWOOD</button>
+          </div>
+          <button id="tape-next">NEXT TAPE ›</button>
+        </div>
+      </div>
+      <div id="tapes"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6:45 GOLDEN HOUR ============ -->
+<section class="scene" id="golden" data-hour="18.75" data-name="Golden hour">
+  <div class="head">
+    <div class="time">6:45<span>PM</span></div>
+    <div>
+      <p class="eye">Scene nine · The balcony</p>
+      <h2>Every car on the road is somebody's whole life.</h2>
+      <p class="dir">(Golden hour. Go-slow on the road below. She gives everyone she can see a story.)</p>
+    </div>
+  </div>
+  <svg class="street-scene" id="street" viewBox="0 0 1200 560" role="group" aria-label="The road outside her building at golden hour. Tap a person, a window or a car for their story.">
+    <!-- buildings across the road -->
+    <rect x="70" y="120" width="270" height="300" fill="#3a3f6b"/><rect x="60" y="112" width="290" height="12" fill="#2f3560"/>
+    <g fill="#272c52">
+      <rect x="96" y="150" width="34" height="34"/><rect x="152" y="150" width="34" height="34"/><rect x="264" y="150" width="34" height="34"/>
+      <rect x="96" y="210" width="34" height="34"/><rect x="208" y="210" width="34" height="34"/><rect x="264" y="210" width="34" height="34"/>
+      <rect x="152" y="270" width="34" height="34"/><rect x="208" y="270" width="34" height="34"/><rect x="96" y="330" width="34" height="34"/><rect x="264" y="330" width="34" height="34"/>
+    </g>
+    <g fill="#ffc928"><rect x="208" y="150" width="34" height="34"/><rect x="96" y="270" width="34" height="34"/><rect x="152" y="330" width="34" height="34"/><rect x="208" y="330" width="34" height="34"/></g>
+    <rect x="390" y="190" width="190" height="230" fill="#2f3560"/>
+    <g fill="#272c52"><rect x="414" y="214" width="30" height="30"/><rect x="470" y="214" width="30" height="30"/><rect x="526" y="214" width="30" height="30"/><rect x="414" y="270" width="30" height="30"/><rect x="526" y="270" width="30" height="30"/><rect x="470" y="326" width="30" height="30"/></g>
+    <g fill="#ffc928"><rect x="470" y="270" width="30" height="30"/><rect x="414" y="326" width="30" height="30"/><rect x="526" y="326" width="30" height="30"/></g>
+    <rect x="630" y="90" width="300" height="330" fill="#3a3f6b"/><rect x="620" y="82" width="320" height="12" fill="#2f3560"/>
+    <g fill="#272c52"><rect x="656" y="120" width="36" height="36"/><rect x="716" y="120" width="36" height="36"/><rect x="836" y="120" width="36" height="36"/><rect x="656" y="186" width="36" height="36"/><rect x="776" y="186" width="36" height="36"/><rect x="836" y="186" width="36" height="36"/><rect x="716" y="252" width="36" height="36"/><rect x="836" y="252" width="36" height="36"/><rect x="656" y="318" width="36" height="36"/><rect x="776" y="318" width="36" height="36"/></g>
+    <g fill="#ffc928"><rect x="776" y="120" width="36" height="36"/><rect x="716" y="186" width="36" height="36"/><rect x="656" y="252" width="36" height="36"/><rect x="716" y="318" width="36" height="36"/><rect x="836" y="318" width="36" height="36"/></g>
+    <rect x="970" y="210" width="200" height="210" fill="#2f3560"/>
+    <g fill="#272c52"><rect x="994" y="234" width="30" height="30"/><rect x="1050" y="234" width="30" height="30"/><rect x="1106" y="290" width="30" height="30"/><rect x="994" y="346" width="30" height="30"/></g>
+    <g fill="#ffc928"><rect x="1106" y="234" width="30" height="30"/><rect x="994" y="290" width="30" height="30"/><rect x="1050" y="290" width="30" height="30"/></g>
+    <!-- pavement + road -->
+    <rect x="0" y="420" width="1200" height="22" fill="#b8774f"/>
+    <rect x="0" y="442" width="1200" height="100" fill="#3f3f4a"/>
+    <path d="M0 492H1200" stroke="#f6efe0" stroke-width="3" stroke-dasharray="30 26" opacity=".7"/>
+    <rect x="0" y="542" width="1200" height="18" fill="#b8774f"/>
+
+    <!-- window: the family -->
+    <g class="who" data-story="family" tabindex="0" role="button" aria-label="A lit window on the third floor">
+      <rect x="208" y="210" width="34" height="34" fill="#ffc928"/>
+      <circle cx="218" cy="226" r="4" fill="#3a3f6b"/><path d="M212 244c1-7 3-10 6-10s5 3 6 10z" fill="#3a3f6b"/>
+      <circle cx="232" cy="229" r="3" fill="#3a3f6b"/><path d="M227 244c1-6 2-8 5-8s4 2 5 8z" fill="#3a3f6b"/>
+      <rect class="hl" x="204" y="206" width="42" height="42" rx="4"/>
+    </g>
+    <!-- balcony: the boy counting planes -->
+    <g class="who" data-story="boy" tabindex="0" role="button" aria-label="A boy on a balcony">
+      <rect x="770" y="252" width="48" height="36" fill="#ffc928"/>
+      <rect x="760" y="284" width="68" height="6" fill="#272c52"/><path d="M764 290v-18M774 290v-18M784 290v-18M794 290v-18M804 290v-18M814 290v-18M824 290v-18M762 272h64" stroke="#272c52" stroke-width="2.5"/>
+      <circle cx="794" cy="262" r="5" fill="#3a3f6b"/><path d="M794 268v8M794 270l8-8" stroke="#3a3f6b" stroke-width="3" stroke-linecap="round"/>
+      <rect class="hl" x="756" y="246" width="76" height="48" rx="4"/>
+    </g>
+    <path d="M880 60l26-6 4 4-26 6z" fill="#f6efe0" opacity=".8"/><path d="M890 56l4 10M896 55l-2-8" stroke="#f6efe0" stroke-width="2" opacity=".8"/>
+    <!-- corn seller -->
+    <g class="who" data-story="corn" tabindex="0" role="button" aria-label="A woman roasting corn">
+      <path class="smoke" d="M356 384q-8-12 0-20t0-20" stroke="#d8d2c8" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <rect x="338" y="396" width="44" height="8" rx="2" fill="#222"/><rect x="342" y="390" width="36" height="6" fill="#ff7a2e"/><path d="M346 390l6-10M358 390l6-10M370 390l4-9" stroke="#e6c34a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M352 404v16M368 404v16" stroke="#222" stroke-width="3"/>
+      <circle cx="396" cy="372" r="8" fill="#5a3a26"/><path d="M386 380h20l4 40h-28z" fill="#c8322b"/><path d="M386 368q10-10 20 0" fill="#2f8f5b"/>
+      <rect class="hl" x="330" y="352" width="86" height="72" rx="6"/>
+    </g>
+    <!-- corper -->
+    <g class="who" data-story="corper" tabindex="0" role="button" aria-label="A corper in khaki walking home">
+      <circle cx="604" cy="370" r="8" fill="#5a3a26"/><rect x="596" y="378" width="16" height="22" rx="4" fill="#f6efe0"/><rect x="596" y="398" width="16" height="22" fill="#b5a77a"/>
+      <path d="M598 420h6M606 420h6" stroke="#2a2a2a" stroke-width="4"/><path d="M596 362h16v-4h-16z" fill="#b5a77a"/>
+      <rect class="hl" x="586" y="352" width="36" height="72" rx="6"/>
+    </g>
+    <!-- suya spot -->
+    <g class="who" data-story="suya" tabindex="0" role="button" aria-label="The suya spot under a bulb">
+      <path d="M940 330v24" stroke="#14213d" stroke-width="2"/><circle cx="940" cy="358" r="6" fill="#ffe58a"/><circle cx="940" cy="358" r="22" fill="#ffe58a" opacity=".25"/>
+      <rect x="912" y="392" width="60" height="8" fill="#6b4a33"/><path d="M918 400v20M966 400v20" stroke="#6b4a33" stroke-width="4"/>
+      <path d="M920 392l10-6 10 6 10-6 10 6" stroke="#8a3a1c" stroke-width="4" fill="none"/>
+      <circle cx="986" cy="376" r="8" fill="#3a2418"/><path d="M976 384h20l3 36h-26z" fill="#f6efe0"/><rect x="976" y="362" width="20" height="8" rx="3" fill="#c8322b"/>
+      <rect class="hl" x="904" y="326" width="102" height="98" rx="6"/>
+    </g>
+    <!-- mai gadi -->
+    <g class="who" data-story="guard" tabindex="0" role="button" aria-label="The gateman next door with a small radio">
+      <rect x="1114" y="356" width="56" height="64" fill="#d9cbb0"/><rect x="1110" y="350" width="64" height="8" fill="#b8a888"/>
+      <circle cx="1136" cy="380" r="7" fill="#3a2418"/><path d="M1126 388h20l2 22h-24z" fill="#2a3b66"/><rect x="1150" y="392" width="14" height="10" rx="2" fill="#c8322b"/>
+      <rect class="hl" x="1106" y="346" width="72" height="78" rx="6"/>
+    </g>
+    <!-- cars in go-slow -->
+    <g class="who bob" data-story="taxi" tabindex="0" role="button" aria-label="A green and white taxi">
+      <path d="M150 482h170l-8-22-36-16h-74l-34 16z" fill="#f6efe0"/><rect x="146" y="480" width="178" height="26" rx="8" fill="#2f8f5b"/><rect x="146" y="480" width="178" height="8" fill="#f6efe0"/>
+      <path d="M196 446h66l26 14h-110z" fill="#9fc4dc"/><circle cx="190" cy="508" r="13" fill="#1d1d22"/><circle cx="282" cy="508" r="13" fill="#1d1d22"/>
+      <rect x="226" y="434" width="20" height="8" rx="2" fill="#ffc928"/>
+      <rect class="hl" x="138" y="428" width="194" height="96" rx="8"/>
+    </g>
+    <g class="who bob" data-story="corolla" tabindex="0" role="button" aria-label="A silver Corolla" style="animation-delay:-1.1s">
+      <path d="M470 486h170l-10-24-36-14h-74l-36 14z" fill="#c5cad3"/><rect x="466" y="484" width="178" height="24" rx="8" fill="#b4bac4"/>
+      <path d="M516 450h66l26 12h-110z" fill="#9fc4dc"/><circle cx="510" cy="510" r="13" fill="#1d1d22"/><circle cx="602" cy="510" r="13" fill="#1d1d22"/>
+      <circle cx="560" cy="466" r="6" fill="#3a2418"/>
+      <rect class="hl" x="458" y="438" width="194" height="88" rx="8"/>
+    </g>
+    <g class="bob" style="animation-delay:-.5s"><path d="M780 482h150l-8-20-30-14h-66l-30 14z" fill="#8a2f3a"/><rect x="776" y="480" width="158" height="24" rx="8" fill="#7a2833"/><circle cx="814" cy="506" r="12" fill="#1d1d22"/><circle cx="896" cy="506" r="12" fill="#1d1d22"/><circle cx="932" cy="490" r="5" fill="#ff5a4a"/></g>
+    <g class="bob" style="animation-delay:-1.7s"><path d="M1010 486h160l-8-22-34-14h-70l-32 14z" fill="#e8e3d8"/><rect x="1006" y="484" width="168" height="24" rx="8" fill="#d9d3c6"/><circle cx="1046" cy="510" r="12" fill="#1d1d22"/><circle cx="1134" cy="510" r="12" fill="#1d1d22"/></g>
+    <g class="bob" style="animation-delay:-2.1s"><rect x="0" y="482" width="110" height="24" rx="8" fill="#2a3b66"/><path d="M0 482h96l-10-20-30-12h-56z" fill="#33477a"/><circle cx="66" cy="508" r="12" fill="#1d1d22"/><circle cx="104" cy="490" r="5" fill="#ff5a4a"/></g>
+  </svg>
+  <div class="story" id="story" aria-live="polite">
+    <div><h3 id="story-h"></h3><p id="story-p"></p><div class="count" id="story-n"></div></div>
+    <div class="nav"><button class="btn btn-ink" id="story-next">Next stranger ›</button></div>
+  </div>
+</section>
+
+<!-- ============ 7:45 FINALE ============ -->
+<section class="finale" id="finale" data-hour="19.75" data-name="The lamp">
+  <div class="street" aria-hidden="true">
+    <i></i><i class="dim"></i><i></i><i></i><i class="dim"></i><i></i><i></i>
+    <i class="dim"></i><i></i><i></i><i class="lit"><svg viewBox="0 0 100 100"><circle cx="50" cy="44" r="15" fill="#14213d"/><path d="M18 100c3-24 16-36 32-36s29 12 32 36z" fill="#14213d"/><rect x="58" y="70" width="34" height="5" fill="#14213d" opacity=".6"/></svg></i><i></i><i class="dim"></i><i></i>
+    <i></i><i></i><i class="dim"></i><i></i><i></i><i></i><i class="dim"></i>
+  </div>
+  <p class="eye">7:45PM · The last scene</p>
+  <h2 class="sec">She's reading. Then she's writing.</h2>
+  <p class="dir">(The street goes quiet. Everyone else has gone in. One window stays lit.)</p>
+  <div class="books">
+    <div class="book"><span class="ph" data-media="isbn:9781398506145,9781398506138,9781398506121" data-alt="Tomorrow I Become a Woman cover" style="background:#c8322b"><span class="cover"><b>Tomorrow I Become a Woman</b><span>Aiwanose Odafen</span></span></span>
+      <h3>Tomorrow I Become a Woman<small>AIWANOSE ODAFEN · 2022</small></h3><p>Her favourite. Uju, her mother, her friends, and two decades of Nigeria. Face down on the bed, being read again.</p></div>
+    <div class="book"><span class="ph" data-media="gbooks:intitle:Broken inauthor:Fatima Bala" data-alt="Broken cover" style="background:#2a3b66"><span class="cover"><b>Broken: Not a Halal Love Story</b><span>Fatima Bala</span></span></span>
+      <h3>Broken<small>FATIMA BALA</small></h3><p>Not a Halal Love Story. Fatima Bala's first book.</p></div>
+    <div class="book"><span class="ph" data-media="gbooks:intitle:Hafsatu Bebi inauthor:Fatima Bala" data-alt="Hafsatu Bebi cover" style="background:#2f8f5b"><span class="cover"><b>Hafsatu Bebi</b><span>Fatima Bala</span></span></span>
+      <h3>Hafsatu Bebi<small>FATIMA BALA · 2023</small></h3><p>Ibrahim, Zuwaira, Sadiq and Hafsat, and what they want from each other. Now published by Masobe Books.</p></div>
+    <div class="book"><span class="ph" data-media="gbooks:intitle:The Lies We Tell inauthor:Fatima Bala" data-alt="The Lies We Tell cover" style="background:#e8b45f"><span class="cover"><b>The Lies We Tell</b><span>Fatima Bala</span></span></span>
+      <h3>The Lies We Tell<small>FATIMA BALA · 2026</small></h3><p>Short stories about women in northern Nigeria. The Abuja launch sold out this summer.</p></div>
+  </div>
+  <div class="fin-grid">
+    <div>
+      <p>And when the book goes down, the notebook comes out. The day always ends at the desk, with the lamp on, writing.</p>
+      <a class="cta" id="substack" href="#" target="_blank" rel="noopener" hidden>Read her Substack →</a>
+    </div>
+    <div class="sonder">
+      <p class="word">sonder</p>
+      <p class="pos">NOUN</p>
+      <p>The realisation that each random passer-by is living a life as vivid and complex as your own.</p>
+      <p class="src">The Dictionary of Obscure Sorrows</p>
+    </div>
+  </div>
+  <div class="you">
+    <p class="dir">(The light turns, slowly, to the audience.)</p>
+    <p class="big">And you had a whole day too.</p>
+  </div>
+  <div class="tbc-row" id="tbc"><span class="arrow">To Be Continued <small>TOMORROW, 9:00AM</small></span></div>
+  <p class="credit">Made for mounâ. Song clips and album art from Apple Music. Anime art from MyAnimeList via Jikan. Show art from TVmaze. Photos from Wikipedia. Book covers from Open Library and Google Books. All of it belongs to the people who made it.</p>
+</section>
+<div id="end" data-hour="20" data-name="Lights down"></div>
+</main>
+</body>
+</html>
